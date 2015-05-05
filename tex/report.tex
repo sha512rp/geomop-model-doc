@@ -1,0 +1,44 @@
+% !TeX spellcheck = cs_CZ
+\documentclass[FM,MP]{tulthesis}
+
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{tul}
+
+\linespread{1.3}
+
+\TULtitle{Validace konfiguračních souborů Flow123d}{Validation of Flow123d configuration files}
+\TULprogramme{N2612}{Elektrotechnika a informatika}{Electrical Engineering and Informatics}
+\TULbranch{1802T007}{Informační technologie}{Information Technologies}
+\TULauthor{Bc.~Tomáš Křížek}
+\TULsupervisor{Jiří Vraný,~Ph.D.}
+\TULyear{2015}
+\TULid{M14000168}
+
+\begin{document}
+
+\ThesisStart{male}
+
+\begin{abstractCZ}
+	Tento projekt se zabývá problematikou validace konfiguračních souborů Flow123d, jejichž struktura je dynamicky definována v závislosti na verzi Flow123D. V projektu jsou popsány specifika formátu konfiguračních souborů, jako jsou reference nebo automatické konverze. Dále je navržena datová struktura pro zpracování konfiguračních souborů a dynamicky definovaných validačních pravidel. Nakonec je rozebrána problematika samotné validace. 
+\end{abstractCZ}
+\vspace{2cm}
+\begin{abstractEN}
+	This project addresses the issues surrounding validation of Flow123d configuration files. Data structure of these files is dependent on the version of Flow123d. This paper describes the specifics of the configuration file format. These include references or automatic conversions. Next, a data structure for processing of configuration files and dynamycally defined validation rules is designed. Lastly, the issues of validation are discussed.
+\end{abstractEN}
+
+\tableofcontents
+\clearpage
+
+\begin{abbrList}
+\textbf{JSON} & JavaScript Object Notation \\
+\end{abbrList}
+
+\chapter{Úvod}
+	V mém magisterském projektu jsem řešil problematiku validace konfiguračních souborů pro Flow123d. Tyto soubory mají dynamicky definovanou strukturu, která se liší podle verze Flow123d. Cílem je vytvořit nástroj, který určí, zda zadaný konfigurační soubor je validní pro danou verzi.
+
+	Konfigurační soubory jsou ve formátu CON, který se podobá standardnímu formátu JSON. Od tohoto formátu se mírně odlišuje syntaxí. Konkrétní odlišnosti jsou popsány v kapitole \ref{specifika-con-formatu}. Kromě odlišné syntaxe také umožňuje vytvářet reference, se kterými je potřeba náležitě pracovat při zpracování dat. Práce s referencemi jsou popsány v kapitole \ref{zpracovani-referenci}. Formát CON také umožňuje v některých případech použít zkrácený zápis, který se poté čtečkou formátu automaticky zkonvertuje na požadovaný tvar. Problematikou autokonverzí se zabývá kapitola \ref{autokonverze}.
+
+	Jelikož se struktura konfiguračních souborů se liší podle verze Flow123d, validace nespočívá pouze v ověření dat podle pevně dané struktury. Pro validaci je nutné dynamicky načíst sadu pravidel, která strukturu popisuje. Sada těchto pravidel je dodána ve formátu JSON. V něm se nachází specifikace jednotlivých pravidel, které společně tvoří stromovou strukturu, stejně jako vstupní konfigurační soubor. Problematika použití sady pravidel popisující strukturu je popsána v kapitole \ref{pravidla-pro-popis-struktury}.
+
+\end{document}
