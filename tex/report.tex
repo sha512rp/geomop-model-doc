@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
 \usepackage{tul}
+\usepackage[hidelinks,unicode,hyperfootnotes=false]{hyperref}
 
 \linespread{1.3}
 
@@ -16,6 +17,9 @@
 \TULid{M14000168}
 
 \begin{document}
+
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
 
 \ThesisStart{male}
 
@@ -34,11 +38,72 @@
 \textbf{JSON} & JavaScript Object Notation \\
 \end{abbrList}
 
-\chapter{Úvod}
+\chapter{Úvod}  %TODO odstranit cislo kapitoly
 	V mém magisterském projektu jsem řešil problematiku validace konfiguračních souborů pro Flow123d. Tyto soubory mají dynamicky definovanou strukturu, která se liší podle verze Flow123d. Cílem je vytvořit nástroj, který určí, zda zadaný konfigurační soubor je validní pro danou verzi.
 
 	Konfigurační soubory jsou ve formátu CON, který se podobá standardnímu formátu JSON. Od tohoto formátu se mírně odlišuje syntaxí. Konkrétní odlišnosti jsou popsány v kapitole \ref{specifika-con-formatu}. Kromě odlišné syntaxe také umožňuje vytvářet reference, se kterými je potřeba náležitě pracovat při zpracování dat. Práce s referencemi jsou popsány v kapitole \ref{zpracovani-referenci}. Formát CON také umožňuje v některých případech použít zkrácený zápis, který se poté čtečkou formátu automaticky zkonvertuje na požadovaný tvar. Problematikou autokonverzí se zabývá kapitola \ref{autokonverze}.
 
 	Jelikož se struktura konfiguračních souborů se liší podle verze Flow123d, validace nespočívá pouze v ověření dat podle pevně dané struktury. Pro validaci je nutné dynamicky načíst sadu pravidel, která strukturu popisuje. Sada těchto pravidel je dodána ve formátu JSON. V něm se nachází specifikace jednotlivých pravidel, které společně tvoří stromovou strukturu, stejně jako vstupní konfigurační soubor. Problematika použití sady pravidel popisující strukturu je popsána v kapitole \ref{pravidla-pro-popis-struktury}.
+
+\chapter{Formát konfiguračních souborů}
+	Konfigurační soubory, které je potřeba zvalidovat, jsou často psány ručně a nejsou strvojově generovány. Formát CON, ve kterém jsou napsány, byl tomuto přizpůsoben. Syntaxe CON je podobná standardnímu formátu JSON, ale pro snažší zápis se mírně liší. Rozdíly v syntaxi oproti formátu JSON jsou následující.
+	\begin{itemize}
+		\item Klíče neobsahující mezeru mohou být napsány bez uvozovek.
+		\item Klíč může být od hodnoty oddělen znakem \uv{\texttt{$=$}} místo \uv{\texttt{$:$}}.
+		\item V souboru se mohou vyskytovat komentáře. Jsou povoleny víceřádkové komentáře uzavřené mezi sekvencemi \texttt{/*} a \texttt{*/}, nebo řádkové komentáře, které jsou uvozeny sekvencí \texttt{//}.
+	\end{itemize}
+
+
+	\label{semantika-con}
+	Formát CON byl navržen pro inicializaci datových typů v C++. Kromě syntaktických rozdílů tedy předpokládá následující sémantická pravidla.
+	\begin{itemize}
+		\item Záznam má určitý typ, který definuje seznam povolených klíčů.
+		\item Každý klíč má daný typ, jméno a implicitní hodnotu.
+		\item Klíče napsané velkými písmeny mají speciální význam a jsou zpracovány čtečkou CON formátu. Názvy ostatních klíčů jsou malými písmeny.
+		\item Povolené datové typy jsou skalární hodnoty, pole nebo záznamy.
+		\item Pole jsou vždy tvořeny prvky stejného typu.
+		\item U záznamů lze použít polymorfismus, kde klíč \texttt{TYPE} udává typ záznamu.
+		\item Lze použít reference na data v rámci CON souboru pomocí speciálního klíče \texttt{REF}.
+	\end{itemize}
+
+	Bližší specifikace formátu CON lze nalézt v dokumentaci Flow123D. %TODO http://bacula.nti.tul.cz/~jan.brezina/flow123d_packages/1.8.1/flow123d_1.8.1_doc.pdf
+
+	\section{Autokonverze}
+
+	\section{Reference}
+
+\chapter{Struktura konfiguračních souborů}
+	Jak již bylo zmíněno v kapitole \ref{semantika-con}, data v konfiguračním soubor podléhají určitým sémantickým pravidlům. Uvedená pravidla jsou pouze obecná a jejich konkrétní podoba je závislá na verzi Flow123D. Požadavky na strukturu jsou popsány v dokumentaci Flow123D a pro potřeby aplikace je jejich popis dodán ve strojově čitelném formátu JSON.
+
+	Tento popis obsahuje pravidla, která slouží pro validaci jednotlivých položek v konfiguračních souborech. Pravidla mohou definovat několik datových typů. Prvními z nich jsou skalární hodnoty. Jejich typy a pravidla pro validaci jsou popsány v tabulce \ref{tab:typy-skalaru}. Dalším datovými typy jsou pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}), který se využívá pro polymorfismus.
+
+	% Aby byl konfigurační soubor validní, musí jeho struktura odpovídat pravidlům, které jsou specifikovány v popisu struktury pro danou verzi. Vstupní data, stejně jako sada pravidel pro validaci, tvoří stromovou strukturu. 
+
+	\begin{table}[h]
+		\centering
+		\caption{Datové typy skalárních hodnot}
+		\label{tab:typy-skalaru}
+		\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Datový typ} & \textbf{Popis}           & \textbf{Pravidlo pro validaci}                                            \\
+		\hline
+		\textit{Integer}    & celé číslo      & hodnota musí být v rozmezí \texttt{min} a \texttt{max}               \\
+		\textit{Double}     & desetinné číslo & hodnota musí být v rozmezí \texttt{min} a \texttt{max}               \\
+		\textit{Bool}       & přepínač        & --                                                  \\
+		\textit{String}     & řetězec         & --                                                  \\
+		\textit{Selection}  & výběr z množiny & \parbox[t]{7cm}{musí obsahovat hodnotu z množiny povolených hodnot} \\
+		\textit{FileName}   & cesta k souboru & --                                                  \\
+		\hline
+		\end{tabular}
+	\end{table}
+
+	U skalárních typů spočívá validace v ověření správného datového typu a ověření validačního pravidla, pokud nějaké existuje. Pro číselné hodnoty se kontroluje rozmezí, které je určeno hodnotami \texttt{min} a \texttt{max} u specifikace datového typu. Speciální validaci vyžaduje také typ \textit{Selection}. U tohoto datového typu je dána množina povolených hodnot (\texttt{values}), kde každá hodnota má jméno (\texttt{name}), které ji jednoznačně identifikuje. Zadaná hodnota v \textit{Selection} je validní, pokud se shoduje se jménem některé z povolených hodnot.
+
+	\section{Pole}
+
+	\section{Záznam}
+
+	\section{Abstraktní záznam}
+
 
 \end{document}
