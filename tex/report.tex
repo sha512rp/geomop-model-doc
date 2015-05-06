@@ -73,9 +73,13 @@
 	\section{Reference}
 
 \chapter{Struktura konfiguračních souborů}
-	Jak již bylo zmíněno v kapitole \ref{semantika-con}, data v konfiguračním soubor podléhají určitým sémantickým pravidlům. Uvedená pravidla jsou pouze obecná a jejich konkrétní podoba je závislá na verzi Flow123D. Požadavky na strukturu jsou popsány v dokumentaci Flow123D a pro potřeby aplikace je jejich popis dodán ve strojově čitelném formátu JSON.
+	Jak již bylo zmíněno v kapitole \ref{semantika-con}, data v konfiguračním soubor podléhají určitým sémantickým pravidlům. Uvedená pravidla jsou pouze obecná a jejich konkrétní podoba je závislá na verzi Flow123D. Požadavky na strukturu jsou popsány v dokumentaci Flow123D a pro potřeby aplikace je jejich specifikace dodána ve strojově čitelném formátu JSON.
 
-	Tento popis obsahuje pravidla, která slouží pro validaci jednotlivých položek v konfiguračních souborech. Pravidla mohou definovat několik datových typů. Prvními z nich jsou skalární hodnoty. Jejich typy a pravidla pro validaci jsou popsány v tabulce \ref{tab:typy-skalaru}. Dalším datovými typy jsou pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}), který se využívá pro polymorfismus.
+	V této kapitole je popsán formát souboru specifikací. Nachází se v něm seznam datových typů, jejich popis, vlastnosti a struktura. Z jednotlivých položek lze vytvořit sada povolených datových typů, které lze použít v konfiguračním souboru. Každý datový typ má specifikované \texttt{id}, které ho jednoznačně identifikuje, a \texttt{input\_type}, který určuje základní datový typ, od kterého je daný typ odvozen. Základními datovými typy jsou skalár (viz tabulka \ref{tab:typy-skalaru}), pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}).
+
+	Data v konfiguračním souboru tvoří stromovou strukturu. Pro jejich ověření se postupuje od kořene stromu k listům. Popis datového typu kořenu stromu je vždy uveden v seznamu jako první. Aby konfigurační soubor odpovídal dané specifikaci, musí být všechny uzly stromu validní. Pokud validní nejsou, zaznamená se, k jaké chybě došlo a kde.
+
+	%Pravidla mohou definovat několik datových typů. Prvními z nich jsou skalární hodnoty. Jejich typy a pravidla pro validaci jsou popsány v tabulce \ref{tab:typy-skalaru}. Dalším datovými typy jsou pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}), který se využívá pro polymorfismus.
 
 	% Aby byl konfigurační soubor validní, musí jeho struktura odpovídat pravidlům, které jsou specifikovány v popisu struktury pro danou verzi. Vstupní data, stejně jako sada pravidel pro validaci, tvoří stromovou strukturu. 
 
@@ -85,7 +89,7 @@
 		\label{tab:typy-skalaru}
 		\begin{tabular}{|l|l|l|}
 		\hline
-		\textbf{Datový typ} & \textbf{Popis}           & \textbf{Pravidlo pro validaci}                                            \\
+		\textbf{Základní datový typ} & \textbf{Popis}           & \textbf{Pravidlo pro validaci}                                            \\
 		\hline
 		\textit{Integer}    & celé číslo      & hodnota musí být v rozmezí \texttt{min} a \texttt{max}               \\
 		\textit{Double}     & desetinné číslo & hodnota musí být v rozmezí \texttt{min} a \texttt{max}               \\
@@ -97,13 +101,29 @@
 		\end{tabular}
 	\end{table}
 
-	U skalárních typů spočívá validace v ověření správného datového typu a ověření validačního pravidla, pokud nějaké existuje. Pro číselné hodnoty se kontroluje rozmezí, které je určeno hodnotami \texttt{min} a \texttt{max} u specifikace datového typu. Speciální validaci vyžaduje také typ \textit{Selection}. U tohoto datového typu je dána množina povolených hodnot (\texttt{values}), kde každá hodnota má jméno (\texttt{name}), které ji jednoznačně identifikuje. Zadaná hodnota v \textit{Selection} je validní, pokud se shoduje se jménem některé z povolených hodnot.
+	\section{Skalární hodnoty}
+		U skalárních typů spočívá validace v ověření správného datového typu a ověření validačního pravidla, pokud nějaké existuje. Pro číselné hodnoty se kontroluje rozmezí, které je určeno hodnotami \texttt{min} a \texttt{max} u specifikace datového typu. Speciální validaci vyžaduje také typ \textit{Selection}. U tohoto datového typu je dána množina povolených hodnot (\texttt{values}), kde každá hodnota má jméno (\texttt{name}), které ji jednoznačně identifikuje. Zadaná hodnota v \textit{Selection} je validní, pokud se shoduje se jménem některé z povolených hodnot.
 
 	\section{Pole}
+		Typ \textit{Array} má podobně jako číselné typy specifikované hodnoty \texttt{min} a \texttt{max}. U pole tyto hodnoty určují minimální, resp. maximální počet položek. Pravidlo pro validaci pole tedy spočívá v oveření počtu položek pole. Dále je nutné ověřit, zda jsou validní jednotlivé položky v poli. Pole jsou vždy homogenní, tedy všechny jeho položky jsou stejného typu, který je určen pomocí \texttt{subtype}.
 
 	\section{Záznam}
+		Typ \textit{Record} má unikátní jméno (\texttt{type\_name}) a obsahuje libovolný počet klíčů. Pokud je potomkem nějakých abstraktních záznamů, tak je jejich seznam uveden v položce \texttt{implements}. Položka \texttt{keys} definuje seznam povolených klíčů. V ní jsou dále uvedeny tyto položky:
+		\begin{itemize}
+			\item \texttt{key}: definuje název klíče,
+			\item \texttt{description}: popis klíče,
+			\item \texttt{type}: typ klíče,
+			\item \texttt{default}: obsahuje dále \texttt{type}, který určuje typ defaultní hodnoty a \texttt{value} pro implicitní hodnotu.
+		\end{itemize}
+
+
+
+		Typ defaultní hodnoty může nabývat hodnot \textit{obligatory}, \textit{value at declaration}, \textit{value at read time} a \textit{optional}. Pro potřeby validace je důležitá pouze hodnota \textit{obligatory}, která specifikuje, že klíč musí být v záznamu uveden. Všechny ostatní typy klíčů nemusí být v záznamu uvedeny. Validace záznamů spočívá v oveření, zda jsou přítomny všechny klíče, které jsou povinné (\textit{obligatory}), a dále v oveření typu všech klíčů, které jsou v záznamu uvedené.
 
 	\section{Abstraktní záznam}
+		Speciální typ záznamu, který umožňuje polymorfismus, je \textit{AbstractRecord}. Obsahuje položku \texttt{implementations}, ve které jsou uvedeny všechny zázamy, které ho implementují. Další důležitou položkou je \texttt{default\_descendant}. Pokud je uvedena, tak definuje výchozí typ záznamu.
+
+		Při validaci záznamu je nutné nejprve určit jeho typ. K tomu slouží klíč \texttt{TYPE}, který je přímo uveden u daného záznamu v konfiguračním souboru. Pokud tento klíč není uveden, použije se typ, který je určen pomocí \texttt{default\_descendant}. Pokud ani takto nelze určit typ záznamu, jedná se o chybový stav. Po určení typu záznamu se provede validace podĺe pravidel, které definuje přímo konkrétní datový typ. 
 
 
 \end{document}
