@@ -1,11 +1,25 @@
 \select@language {czech}
-\contentsline {section}{Seznam zkratek}{7}{chapter*.1}
-\contentsline {chapter}{\numberline {1}\IeC {\'U}vod}{8}{chapter.1}
-\contentsline {chapter}{\numberline {2}Form\IeC {\'a}t konfigura\IeC {\v c}n\IeC {\'\i }ch soubor\IeC {\r u}}{9}{chapter.2}
-\contentsline {section}{\numberline {2.1}Autokonverze}{10}{section.2.1}
-\contentsline {section}{\numberline {2.2}Reference}{10}{section.2.2}
-\contentsline {chapter}{\numberline {3}Struktura konfigura\IeC {\v c}n\IeC {\'\i }ch soubor\IeC {\r u}}{11}{chapter.3}
-\contentsline {section}{\numberline {3.1}Skal\IeC {\'a}ry}{12}{section.3.1}
-\contentsline {section}{\numberline {3.2}Pole}{12}{section.3.2}
-\contentsline {section}{\numberline {3.3}Z\IeC {\'a}znam}{12}{section.3.3}
-\contentsline {section}{\numberline {3.4}Abstraktn\IeC {\'\i } z\IeC {\'a}znam}{13}{section.3.4}
+\contentsline {chapter}{\numberline {1}\IeC {\'U}vod}{7}{chapter.1}
+\contentsline {chapter}{\numberline {2}Form\IeC {\'a}t konfigura\IeC {\v c}n\IeC {\'\i }ch soubor\IeC {\r u}}{8}{chapter.2}
+\contentsline {section}{\numberline {2.1}Reference}{9}{section.2.1}
+\contentsline {section}{\numberline {2.2}Automatick\IeC {\'e} konverze}{9}{section.2.2}
+\contentsline {chapter}{\numberline {3}Struktura konfigura\IeC {\v c}n\IeC {\'\i }ch soubor\IeC {\r u}}{10}{chapter.3}
+\contentsline {section}{\numberline {3.1}Skal\IeC {\'a}rn\IeC {\'\i } hodnoty}{11}{section.3.1}
+\contentsline {section}{\numberline {3.2}Pole}{11}{section.3.2}
+\contentsline {section}{\numberline {3.3}Z\IeC {\'a}znam}{11}{section.3.3}
+\contentsline {section}{\numberline {3.4}Abstraktn\IeC {\'\i } z\IeC {\'a}znam}{12}{section.3.4}
+\contentsline {chapter}{\numberline {4}Implementace}{13}{chapter.4}
+\contentsline {section}{\numberline {4.1}Modul \texttt {model}}{13}{section.4.1}
+\contentsline {subsubsection}{Atributy}{13}{subsubsection*.2}
+\contentsline {subsubsection}{Metody}{13}{subsubsection*.3}
+\contentsline {paragraph}{\texttt {DataNode(data, [parent, [name]])}}{13}{paragraph*.4}
+\contentsline {paragraph}{\texttt {get(path)}}{14}{paragraph*.5}
+\contentsline {section}{\numberline {4.2}Modul \texttt {format}}{14}{section.4.2}
+\contentsline {subsubsection}{Atributy}{14}{subsubsection*.6}
+\contentsline {section}{\numberline {4.3}Modul \texttt {autoconvert}}{15}{section.4.3}
+\contentsline {section}{\numberline {4.4}Modul \texttt {validator}}{15}{section.4.4}
+\contentsline {subsubsection}{Atributy}{15}{subsubsection*.7}
+\contentsline {subsubsection}{Metody}{16}{subsubsection*.8}
+\contentsline {paragraph}{\texttt {validate(node, [its])}}{16}{paragraph*.9}
+\contentsline {section}{\numberline {4.5}Modul \texttt {parser}}{16}{section.4.5}
+\contentsline {chapter}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{17}{chapter.5}
