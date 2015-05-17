@@ -23,4 +23,4 @@
 \contentsline {paragraph}{\texttt {validate(node, [its])}}{16}{paragraph*.9}
 \contentsline {section}{\numberline {4.5}Modul \texttt {parser}}{17}{section.4.5}
 \contentsline {chapter}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{18}{chapter.5}
-\contentsline {section}{Literatura}{19}{chapter*.10}
+\contentsline {chapter}{Pou\IeC {\v z}it\IeC {\'a} Literatura}{19}{chapter*.10}
