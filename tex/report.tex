@@ -6,7 +6,7 @@
 \usepackage{tul}
 \usepackage[hidelinks,unicode,hyperfootnotes=false]{hyperref}
 \usepackage{enumitem}
-
+\usepackage{cite}
 
 \linespread{1.3}
 
@@ -17,6 +17,8 @@
 \TULsupervisor{Jiří Vraný,~Ph.D.}
 \TULyear{2015}
 \TULid{M14000168}
+
+\addto\captionsczech{\def\refname{Literatura}}
 
 \begin{document}
 
@@ -37,7 +39,7 @@
 \clearpage
 
 \chapter{Úvod}
-	Tento projekt řeší problematiku validace konfiguračních souborů pro Flow123d. Tyto soubory mají dynamicky definovanou strukturu, která se liší podle verze Flow123d. Cílem je vytvořit nástroj, který určí, zda zadaný konfigurační soubor je validní pro danou verzi.
+	Tento projekt řeší problematiku validace konfiguračních souborů pro Flow123d. Software Flow123d\cite{bib:flow123d} slouží k simulaci toku podzemních vod a transportu látek nebo tepla. Konfigurační soubory mají dynamicky definovanou strukturu, která se liší podle verze Flow123d. Cílem je vytvořit nástroj, který určí, zda zadaný konfigurační soubor je validní pro danou verzi.
 
 	Konfigurační soubory jsou ve formátu CON, který se podobá standardnímu formátu JSON. Od tohoto formátu se mírně odlišuje syntaxí. Konkrétní odlišnosti jsou popsány v kapitole \ref{format-con}. Kromě odlišné syntaxe také umožňuje vytvářet reference (viz kapitola \ref{reference}), se kterými je potřeba náležitě pracovat při zpracování dat. Formát CON také umožňuje v některých případech použít zkrácený zápis, který se poté čtečkou formátu automaticky zkonvertuje na požadovaný tvar. Problematikou automatických konverzí se zabývá kapitola \ref{automaticke-konverze}.
 
@@ -48,7 +50,7 @@
 
 \chapter{Formát konfiguračních souborů}
 	\label{format-con}
-	Konfigurační soubory, které je potřeba zvalidovat, jsou často psány ručně a nejsou strvojově generovány. Formát CON, ve kterém jsou napsány, byl tomuto přizpůsoben. Syntaxe CON je podobná standardnímu formátu JSON, ale pro snažší zápis se mírně liší. Rozdíly v syntaxi oproti formátu JSON jsou následující.
+	Konfigurační soubory, které je potřeba zvalidovat, jsou často psány ručně a nejsou strojově generovány. Formát CON, ve kterém jsou napsány, byl tomuto přizpůsoben. Syntaxe CON je podobná standardnímu formátu JSON, ale pro snažší zápis se mírně liší. Rozdíly v syntaxi oproti formátu JSON jsou následující.
 	\begin{itemize}
 		\item Klíče neobsahující mezeru mohou být napsány bez uvozovek.
 		\item Klíč může být od hodnoty oddělen znakem \uv{\texttt{$=$}} místo \uv{\texttt{$:$}}.
@@ -68,7 +70,7 @@
 		\item Lze použít reference na data v rámci CON souboru pomocí speciálního klíče \texttt{REF}.
 	\end{itemize}
 
-	Bližší specifikace formátu CON lze nalézt v dokumentaci Flow123d. %TODO http://bacula.nti.tul.cz/~jan.brezina/flow123d_packages/1.8.1/flow123d_1.8.1_doc.pdf
+	Bližší specifikace formátu CON lze nalézt v dokumentaci Flow123d\cite{bib:flow123d-manual}.
 
 
 	\section{Reference}
@@ -86,7 +88,7 @@
 
 	\section{Automatické konverze}
 		\label{automaticke-konverze}
-		Pro usnadnění psaní konfiguračních souborů existují určitá pravidla, která umožňují zkrátit zápis a vynachat některé údaje, které jsou poté doplněny automaticky. Existují dva typy automatických koverzí.
+		Pro usnadnění psaní konfiguračních souborů existují určitá pravidla, která umožňují zkrátit zápis a vynechat některé údaje, které jsou poté doplněny automaticky. Existují dva typy automatických konverzí.
 
 		První konverze proběhne, pokud se na vstupu očekává pole a místo něj se na vstupu nachází skalární hodnota nebo záznam. V tomto případě dojde k tomu, že se vytvoří pole s očekávanou dimenzí a do něj se vloží jediná položka -- hodnota, která je na vstupu.
 
@@ -99,10 +101,6 @@
 	V této kapitole je popsán formát souboru specifikací. Nachází se v něm seznam datových typů, jejich popis, vlastnosti a struktura. Z jednotlivých položek lze vytvořit sada povolených datových typů, které lze použít v konfiguračním souboru. Každý datový typ má specifikované \texttt{id}, které ho jednoznačně identifikuje, a \texttt{input\_type}, který určuje základní datový typ, od kterého je daný typ odvozen. Základními datovými typy jsou skalár (viz tabulka \ref{tab:typy-skalaru}), pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}).
 
 	Data v konfiguračním souboru tvoří stromovou strukturu. Pro jejich ověření se postupuje od kořene stromu k listům. Popis datového typu kořenu stromu je vždy uveden v seznamu jako první. Aby konfigurační soubor odpovídal dané specifikaci, musí být všechny uzly stromu validní. Pokud validní nejsou, zaznamená se, k jaké chybě došlo a kde.
-
-	%Pravidla mohou definovat několik datových typů. Prvními z nich jsou skalární hodnoty. Jejich typy a pravidla pro validaci jsou popsány v tabulce \ref{tab:typy-skalaru}. Dalším datovými typy jsou pole (\textit{Array}), záznam (\textit{Record}) a abstraktní záznam (\textit{AbstractRecord}), který se využívá pro polymorfismus.
-
-	% Aby byl konfigurační soubor validní, musí jeho struktura odpovídat pravidlům, které jsou specifikovány v popisu struktury pro danou verzi. Vstupní data, stejně jako sada pravidel pro validaci, tvoří stromovou strukturu. 
 
 	\begin{table}[h]
 		\centering
@@ -126,7 +124,7 @@
 		U skalárních typů spočívá validace v ověření správného datového typu a ověření validačního pravidla, pokud nějaké existuje. Pro číselné hodnoty se kontroluje rozmezí, které je určeno hodnotami \texttt{min} a \texttt{max} u specifikace datového typu. Speciální validaci vyžaduje také typ \textit{Selection}. U tohoto datového typu je dána množina povolených hodnot (\texttt{values}), kde každá hodnota má jméno (\texttt{name}), které ji jednoznačně identifikuje. Zadaná hodnota v \textit{Selection} je validní, pokud se shoduje se jménem některé z povolených hodnot.
 
 	\section{Pole}
-		Typ \textit{Array} má podobně jako číselné typy specifikované hodnoty \texttt{min} a \texttt{max}. U pole tyto hodnoty určují minimální, resp. maximální počet položek. Pravidlo pro validaci pole tedy spočívá v oveření počtu položek pole. Dále je nutné ověřit, zda jsou validní jednotlivé položky v poli. Pole jsou vždy homogenní, tedy všechny jeho položky jsou stejného typu, který je určen pomocí \texttt{subtype}.
+		Typ \textit{Array} má podobně jako číselné typy specifikované hodnoty \texttt{min} a \texttt{max}. U pole tyto hodnoty určují minimální, resp. maximální počet položek. Pravidlo pro validaci pole tedy spočívá v ověření počtu položek pole. Dále je nutné ověřit, zda jsou validní jednotlivé položky v poli. Pole jsou vždy homogenní, tedy všechny jeho položky jsou stejného typu, který je určen pomocí \texttt{subtype}.
 
 	\section{Záznam}
 		\label{struktura-zaznam}
@@ -135,10 +133,10 @@
 			\item \texttt{key}: definuje název klíče,
 			\item \texttt{description}: popis klíče,
 			\item \texttt{type}: typ klíče,
-			\item \texttt{default}: obsahuje dále \texttt{type}, který určuje typ defaultní hodnoty a \texttt{value} pro implicitní hodnotu.
+			\item \texttt{default}: obsahuje dále \texttt{type}, který určuje typ výchozí hodnoty a \texttt{value} implicitní hodnotu.
 		\end{itemize}
 
-		Typ defaultní hodnoty může nabývat hodnot \textit{obligatory}, \textit{value at declaration}, \textit{value at read time} a \textit{optional}. Pro potřeby validace je důležitá pouze hodnota \textit{obligatory}, která specifikuje, že klíč musí být v záznamu uveden. Všechny ostatní typy klíčů nemusí být v záznamu uvedeny. Validace záznamů spočívá v oveření, zda jsou přítomny všechny klíče, které jsou povinné (\textit{obligatory}), a dále v oveření typu všech klíčů, které jsou v záznamu uvedené.
+		Typ defaultní hodnoty může nabývat hodnot \textit{obligatory}, \textit{value at declaration}, \textit{value at read time} a \textit{optional}. Pro potřeby validace je důležitá pouze hodnota \textit{obligatory}, která specifikuje, že klíč musí být v záznamu uveden. Všechny ostatní typy klíčů nemusí být v záznamu uvedeny. Validace záznamů spočívá v ověření, zda jsou přítomny všechny klíče, které jsou povinné (\textit{obligatory}), a dále v ověření typu všech klíčů, které jsou v záznamu uvedené.
 
 	\section{Abstraktní záznam}
 		Speciální typ záznamu, který umožňuje polymorfismus, je \textit{AbstractRecord}. Obsahuje položku \texttt{implementations}, ve které jsou uvedeny všechny zázamy, které ho implementují. Další důležitou položkou je \texttt{default\_descendant}. Pokud je uvedena, tak definuje výchozí typ záznamu.
@@ -147,7 +145,26 @@
 
 \chapter{Implementace}
 	\label{implementace}
-	Aplikace pro validaci byla vytvořena v jazyce Python. Následuje popis jednotlivých modulů a jejich veřejných funkcí, tříd a metod.
+	Aplikace pro validaci byla vytvořena v jazyce Python verze 3. Detaily a použití tohoto jazyka je popsáno na webových stránkách s jeho dokumentací\cite{bib:python}. Vytvořená aplikace se skládá z několika modulů, jejichž propojení je znázorněno na obrázku \ref{img:propojeni-modulu}.
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\linewidth]{../img/con_modules.png}
+		\caption{Propojení modulů}
+		\label{img:propojeni-modulu}
+	\end{figure}
+
+	Vstupem do aplikace jsou dva soubory. Jedním z nich je samotný konfigurační soubor, na obrázku uveden jako \textit{con soubor}. Druhým z nich je soubor, který obsahuje kompletní popis konkrétní verze formátu, tedy výčet všech možných datových typů, jejich strukturu a uspořádání, na obrázku je uveden jako \textit{soubor formátu}. Výstupem z aplikace je informace, zda konfigurační soubor odpovídá danému formátu, tedy jestli je validní, případně informace o nalezených odlišnostech.
+
+	Přečtení souboru a vytvoření jeho datové reprezentace zajišťuje modul \texttt{parser}. Vstupem do tohoto modulu je cesta ke konfiguračnímu souboru. Modul tento soubor načte, interpretuje a vytvoří jeho datovou reprezentaci s pomocí modulu \texttt{model}.
+
+	Modul \texttt{format} zajišťuje načtení souboru formátu, který obsahuje popis a propojení použitelných datových typů. Výstupem z tohoto modulu je specifikace formátu \texttt{InputTypeSpec}, která reprezentuje datový typ kořenového prvku ve stromové struktuře, kterou data tvoří.
+
+	Modul \texttt{autoconvert} provede v modelu automatické konverze. Aby bylo možné konverze provést, je potřeba kromě samotného modelu dodat tomuto modulu i očekávaný formát souboru.
+
+	Modul \texttt{validator} očekává na vstupu model, ve kterém již proběhly automatické konverze, a formát souboru. Modul ověří, zda dodaný model je v očekávaném formátu.
+
+	Následuje popis jednotlivých modulů a jejich veřejných funkcí, tříd a metod.
 
 	\section{Modul \texttt{model}}
 
@@ -167,7 +184,7 @@
 				\paragraph{\texttt{DataNode(data, [parent, [name]])}}
 					inicializuje třídu podle argumentu \texttt{data}. Pokud se jedná o stromovou strukturu, která je tvořena slovníky a seznamy, dojde rekurzivně k vytvoření celého stromu a tato třída je kořenem celého stromu. Volitelné atributy \texttt{parent} a \texttt{name} mají využití především pro inicializaci potomků ve stromové struktuře, kdy \texttt{parent} specifikuje nadřazený uzel a \texttt{name} udává název uzlu, který se použije při generování cesty ve stromu.
 				\paragraph{\texttt{get(path)}}
-					interpretuje zadanou cestu \texttt{path} a vrátí uzel na dané cestě ve stromu, pokud existuje. V opačném případě se vyvolá vyjímka \textit{LookupError}.
+					interpretuje zadanou cestu \texttt{path} a vrátí uzel na dané cestě ve stromu, pokud existuje. V opačném případě se vyvolá výjimka \textit{LookupError}.
 
 	\section{Modul \texttt{format}}
 		\subsection*{\texttt{InputTypeSpec}}
@@ -210,18 +227,18 @@
 			\subsubsection{Atributy}
 				\begin{itemize}[leftmargin=3cm]
 					\setlength\itemsep{-2mm}
-					\item[\texttt{errors}] seznam obsahující uzly (\texttt{DataNode}), ve kterých došlo k chybě, a příslušné vyjímky (\texttt{Exception}), které nastaly
+					\item[\texttt{errors}] seznam obsahující uzly (\texttt{DataNode}), ve kterých došlo k chybě, a příslušné výjimky (\texttt{Exception}), které nastaly
 					\item[\texttt{console\_log}] vrací řetězec, který obsahuje zformátovaný text pro výpis chyb do konzole
 				\end{itemize}
 			
 			\subsubsection{Metody}
 				\paragraph{\texttt{validate(node, [its])}}
-					Metoda určí, zda uzel \texttt{node} odpovídá formátu \texttt{its}. Vrací \textit{True} nebo \textit{False}, podle toho, zda uzel odpovídá danému formátu. Pokud není uveden formát \texttt{its}, použije se \texttt{node.its}. Po zavolání této metody je možné získat vyjímky, ke kterým došlo při validaci, pomocí atributu \texttt{errors}. Proces validace probíhá tak, jak byl popsán v kapitole \ref{struktura-konf-souboru}.
+					Metoda určí, zda uzel \texttt{node} odpovídá formátu \texttt{its}. Vrací \textit{True} nebo \textit{False}, podle toho, zda uzel odpovídá danému formátu. Pokud není uveden formát \texttt{its}, použije se \texttt{node.its}. Po zavolání této metody je možné získat výjimky, ke kterým došlo při validaci, pomocí atributu \texttt{errors}. Proces validace probíhá tak, jak byl popsán v kapitole \ref{struktura-konf-souboru}.
 
 
 	\section{Modul \texttt{parser}}
 		\subsection*{\texttt{parse\_con(filename)}}
-			Funkce přečte soubor s cestou \texttt{filename} a vrátí datovou reprezentaci vstupního CON souboru. Funkce zároveň vytvoří příslušné reference, které byly zadány pomocí klíče REF, tak jak bylo popsáno v kapitole \ref{reference}.
+			Funkce přečte soubor s cestou \texttt{filename} a vrátí datovou reprezentaci vstupního CON souboru. Při načítání souboru je využit balík demjson\cite{bib:demjson}. Funkce zároveň vytvoří příslušné reference, které byly zadány pomocí klíče REF, tak jak bylo popsáno v kapitole \ref{reference}.
 
 			Výstupem z funkce je kořen (\texttt{DataNode}) načtené datové struktury. Jedná se pouze o reprezentaci dat z konfiguračního souboru, která jsou nezávislá na očekávaném formátu. Oproti tomu data, která projdou automatickou konverzí, jsou již závislá na konkrétním formátu.
 
@@ -234,7 +251,25 @@
 
 	Vytvořené rozhraní má být jednou ze součástí nově vznikající aplikace GeoMop, která bude sloužit uživatelům aplikace Flow123d. Načtení a validace datové struktury bude součástí kontextu Model, který bude umožňovat práci s různými verzemi konfiguračních souborů.
 
-	Navržený validátor umožňí ověřit data, která uživatel zada v grafickém rozhraní. Jeho hlavní funkcí a přínosem je však určení verze formátu konfiguračního souboru. Na základě ověření, zda data odpovídají odlišným verzím formátu, bude možné určit správnou verzi formátu souboru a případně tento soubor zkonvertovat na formát jiné verze.
+	Navržený validátor umožní ověřit data, která uživatel zadá v grafickém rozhraní. Jeho hlavní funkcí a přínosem je však určení verze formátu konfiguračního souboru. Na základě ověření, zda data odpovídají odlišným verzím formátu, bude možné určit správnou verzi formátu souboru a případně tento soubor zkonvertovat na formát jiné verze.
 
+\clearpage
+
+\begin{thebibliography}{99}
+	\addcontentsline{toc}{section}{\refname}
+	
+	\bibitem{bib:flow123d}
+		Flow123d [online]. 2015. [cit. 2015-05-11]. Dostupné z: \url{http://flow123d.github.io/}
+		
+	\bibitem{bib:flow123d-manual}
+		BŘEZINA, Jan, Jan STEBEL, David FLANDERKA, Pavel EXNER a Jiří HNÍDEK. 2015. \textit{Flow123d} [online]. Liberec [cit. 2015-05-11]. Dostupné z: \url{http://bacula.nti.tul.cz/~jan.brezina/flow123d_packages/1.8.2_release/flow123d_1.8.2_doc.pdf}. Documentation of file formats and brief user manual. Technical university of Liberec.
+
+	\bibitem{bib:python}
+		PYTHON SOFTWARE FOUNDATION. \textit{Python 3.4.3 documentation} [online]. 2015 [cit. 2015-05-14]. Dostupné z: \url{https://docs.python.org/3/}
+		
+	\bibitem{bib:demjson}
+		MERANDA, Deron. Demjson and jsonlint. \textit{Python: module demjson} [online]. 2014 [cit. 2015-05-13]. Dostupné z: \url{http://deron.meranda.us/python/demjson/}
+	
+\end{thebibliography}
 
 \end{document}

@@ -9,17 +9,18 @@
 \contentsline {section}{\numberline {3.3}Z\IeC {\'a}znam}{11}{section.3.3}
 \contentsline {section}{\numberline {3.4}Abstraktn\IeC {\'\i } z\IeC {\'a}znam}{12}{section.3.4}
 \contentsline {chapter}{\numberline {4}Implementace}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}Modul \texttt {model}}{13}{section.4.1}
-\contentsline {subsubsection}{Atributy}{13}{subsubsection*.2}
-\contentsline {subsubsection}{Metody}{13}{subsubsection*.3}
-\contentsline {paragraph}{\texttt {DataNode(data, [parent, [name]])}}{13}{paragraph*.4}
+\contentsline {section}{\numberline {4.1}Modul \texttt {model}}{14}{section.4.1}
+\contentsline {subsubsection}{Atributy}{14}{subsubsection*.2}
+\contentsline {subsubsection}{Metody}{14}{subsubsection*.3}
+\contentsline {paragraph}{\texttt {DataNode(data, [parent, [name]])}}{14}{paragraph*.4}
 \contentsline {paragraph}{\texttt {get(path)}}{14}{paragraph*.5}
-\contentsline {section}{\numberline {4.2}Modul \texttt {format}}{14}{section.4.2}
-\contentsline {subsubsection}{Atributy}{14}{subsubsection*.6}
-\contentsline {section}{\numberline {4.3}Modul \texttt {autoconvert}}{15}{section.4.3}
-\contentsline {section}{\numberline {4.4}Modul \texttt {validator}}{15}{section.4.4}
-\contentsline {subsubsection}{Atributy}{15}{subsubsection*.7}
+\contentsline {section}{\numberline {4.2}Modul \texttt {format}}{15}{section.4.2}
+\contentsline {subsubsection}{Atributy}{15}{subsubsection*.6}
+\contentsline {section}{\numberline {4.3}Modul \texttt {autoconvert}}{16}{section.4.3}
+\contentsline {section}{\numberline {4.4}Modul \texttt {validator}}{16}{section.4.4}
+\contentsline {subsubsection}{Atributy}{16}{subsubsection*.7}
 \contentsline {subsubsection}{Metody}{16}{subsubsection*.8}
 \contentsline {paragraph}{\texttt {validate(node, [its])}}{16}{paragraph*.9}
-\contentsline {section}{\numberline {4.5}Modul \texttt {parser}}{16}{section.4.5}
-\contentsline {chapter}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{17}{chapter.5}
+\contentsline {section}{\numberline {4.5}Modul \texttt {parser}}{17}{section.4.5}
+\contentsline {chapter}{\numberline {5}Z\IeC {\'a}v\IeC {\v e}r}{18}{chapter.5}
+\contentsline {section}{Literatura}{19}{chapter*.10}
