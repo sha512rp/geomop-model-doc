@@ -1,0 +1,201 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+  \usetheme{Warsaw}
+  \setbeamercovered{transparent}
+}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{palatino}
+\usepackage{graphicx}
+\usepackage{animate}
+
+\begin{document}
+\setbeamertemplate{caption}{\insertcaption}
+
+\title[Tvorba aplikace pro analýzu výstupních dat z Flow123D]{Tvorba aplikace pro analýzu výstupních dat z~transportních procesů získaných ze softwaru Flow123D}
+\author[Tomáš Křížek]{{\large Tomáš Křížek}\\{\scriptsize Vedoucí práce: Josef Chudoba, Ph.D.}}
+\institute[TUL]{Technická univerzita v Liberci}
+\date{17.~června~2014}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Úvod do problematiky}
+	\begin{block}{Flow123D}
+		\begin{itemize}
+			\item Hlubinné ukládání vyhořelého jaderného paliva.
+			\item Horninový masiv reprezentován sítí elementů.
+			\item Simulace transportních procesů látek do okolí.
+			\item Výstupní data
+			\begin{itemize}
+				\item textové soubory (řádově jednotky GB)
+				\item koncentrace látek na elementech v čase
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Cíle práce}
+	\begin{block}{Software pro generovaní grafů a map}
+		\begin{itemize}
+			\item Vhodné načtení vstupních dat z textových souborů.
+			\item Vygenerování \textbf{grafů} -- vývoj koncentrace v čase na daném elementu.
+			\item Vygenerování \textbf{map} -- grafické zobrazení koncentrací na elementech v daném řezu sítě.
+			\item Zpracování a porovnání sady úloh.
+		\end{itemize}
+	\end{block}
+	\begin{block}{Motivace}
+		\begin{itemize}
+			\item Reprezentace dat ve formátu, kterému člověk porozumí.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Ukázka grafů}
+	\hspace*{-10mm}\makebox[\paperwidth][c]{%
+		\begin{minipage}{0.5\paperwidth}
+			\centering
+			\includegraphics[width=0.5\paperwidth]{img/graf.pdf} \\
+			{\tiny Graf jedné úlohy}
+		\end{minipage}%
+		\begin{minipage}{0.5\paperwidth}
+			\centering
+			\includegraphics[width=0.5\paperwidth]{img/graf_vice_uloh.pdf} \\
+			{\tiny Graf sady úloh}
+		\end{minipage}
+	}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Ukázka mapy}
+	\centering
+	\includegraphics[height=0.85\textheight]{img/mapa.png}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Použité technologie a knihovny}
+	\begin{itemize}
+		\item \textbf{Python 2.7} -- programovací jazyk
+		\item \textbf{Matplotlib 1.3.1}
+			\begin{itemize}
+				\item knihovna pro generování grafů a map
+				\item podpora exportu ve formátech rastrové i vektorové grafiky
+			\end{itemize}
+		\item \textbf{SQLite 3}
+			\begin{itemize}
+				\item databáze pro ukládání dat
+				\item vzhledem k formátu vstupních dat je vhodnější použít databázi než seznamy či pole
+				\item umožňuje uložení databáze pouze v paměti po dobu běhu programu
+			\end{itemize}
+		\item \textbf{PyQt 4} -- grafické rozhraní
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{Ukázka animace mapy}
+%	\animategraphics[autoplay,loop,height=0.85\textheight]{2}{img/v2/melechov-}{1}{9}
+%\end{frame}
+
+\begin{frame}
+	\frametitle{Výsledky práce}
+	Aplikace, která
+	\begin{itemize}
+		\item je schopná načíst data z transportních procesů získaných z Flow123D;
+		\item generuje ze vstupních dat grafy, které zobrazují vývoj koncentrace sledované látky na elementech;
+		\item generuje mapy, které graficky znázorňují hodnoty koncentrací na daném řezu sítě;
+		\item umožňuje vyexportovat grafy a mapy ve formátech rastrové i vektorové grafiky;
+		\item umí zpracovat sadu úloh a vygenerovat požadované průběhy.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+\begin{center}
+\huge Děkuji za pozornost.
+\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Otázky vedoucího práce -- 1.}
+	\begin{block}{}
+	{\footnotesize 	Na obrázku 8 uvádíte graf koncentrace v závislosti na čase. Zde jsou velice blízké koncentrace pro průměr, medián a 95\% kvantil. Element vlivem vzdálenosti od úložiště prakticky není zasažen kontaminací. Jak by se změnily výsledky na elementu v blízkosti povrchu a v blízkosti úložiště?}
+	\end{block}
+	\centering
+		\includegraphics[width=0.5\paperwidth]{img/Melechov_sada_11122.pdf}\\
+		{\tiny Obrázek 8 z textové části}
+	\vfill
+\end{frame}
+
+\begin{frame}
+	\frametitle{Otázky vedoucího práce -- 1.}
+	\hspace*{-10mm}\makebox[\paperwidth][c]{%
+		\begin{minipage}{0.5\paperwidth}
+			\centering
+			\includegraphics[width=0.5\paperwidth]{img/Melechov_sada_03779.pdf} \\
+			{\tiny Element v blízkosti povrchu}
+		\end{minipage}%
+		\begin{minipage}{0.5\paperwidth}
+			\centering
+			\includegraphics[width=0.5\paperwidth]{img/Melechov_sada_19815.pdf} \\
+			{\tiny Element v blízkosti úložiště}
+		\end{minipage}
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Otázky vedoucího práce -- 2.}
+	\begin{block}{}
+		Software Flow123D umožňuje řešit transport i více látek najednou. Jaké operace byste musel vykonat, aby Váš software umožnil analyzovat taková data?
+	\end{block}
+	\begin{itemize}
+		\item žádné změny ve struktuře aplikace nebo databáze -- aplikace počítá s možností tohoto rozšíření
+		\item žádné změny v načítání vstupních dat
+		\item upravení generování názvů výstupních souborů
+		\item získání seznamu látek z databáze a provedení generování map a grafů pro všechny tyto látky
+	\end{itemize}
+	\vfill
+\end{frame}
+
+\begin{frame}
+	\frametitle{Otázky vedoucího práce -- 3.}
+	\begin{block}{}
+		Při transportu více látek, jakým způsobem byste mohl rozšířit analýzy výsledků transportu?
+	\end{block}
+	\begin{itemize}
+		\item pro každou z látek jsou dané hodnoty koncentrací [$ng/m^3$]
+		\item na základě specifické aktivity dané látky určit objemovou aktivitu [$Bq/m^3$]
+		\item po vynásobení konverzním faktorem lze určit objemovou dávku [$Sv/m^3$]
+		\item objemové dávky všech látek lze sečíst a pro každý element vytvořit graf znázorňující vývoj celkové objemové dávky
+		\item praktický význam: určení dopadu na lidský organismus po vypití jednoho~$m^3$ vody
+	\end{itemize}
+	\vfill
+\end{frame}
+
+\begin{frame}
+	\frametitle{Otázky oponenta práce -- 1.}
+	\begin{block}{}
+		V kapitole 3.2 používáte jako argument proti knihovně NumPy nemožnost pracovat na řídkých datech. Nebylo by v tomto případě vhodnější použít balíček sparse z příbuzné knihovny SciPy než databázi SQLite?
+	\end{block}
+	\begin{itemize}
+		\item stejná paměťová náročnost obou řešení
+		\item práce s balíčkem sparse by byla o něco rychlejší, ale dopad na celkovou rychlost aplikace by byl minimální
+		\item SQLite vhodnější pro ukládání vrcholů a~elementů -- snadné nalezení elementů, které se nachází v určité nadmořské výšce
+		\item ideální řešení: SQLite pro ukládání dat o vrcholech a~elementech, balíček sparse pro ukládání hodnot koncentrací
+	\end{itemize}
+	\vfill
+\end{frame}
+
+\begin{frame}{}{}
+\begin{center}
+\huge Děkuji za pozornost.
+\end{center}
+\end{frame}
+
+\end{document}
