@@ -1,11 +1,13 @@
 \frametitle{Ukázka použití}
-
+\begin{itemize}
+\item v budoucnu součástí interaktivního grafického editoru
+\item aktuálně rozhraní pro konzoli pro účely demonstrace a testování
+\end{itemize}
 \noindent
 \footnotesize\begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{blue}{$} python3 cli.py demo/example.con -f demo/1.8.2.json
 \textcolor{green}{VALID}
 \end{Verbatim}
-\pause
 \footnotesize\begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{blue}{$} python3 cli.py demo/invalid.con -f demo/1.8.2.json
 \textcolor{red}{INVALID}
@@ -13,10 +15,5 @@
     for LinSys
 \textit{/problem/secondary_equation/balance/cumulative}: Expecting
     type Bool
-\textit{/problem/secondary_equation/reaction_term/input_fields/0/}
-\textit{diffusion_rate_immobile/value}: Expected at least 2 items
-\textit{/problem/secondary_equation/reaction_term/input_fields/0/}
-\textit{init_conc_immobile}: Missing obligatory key 'value' in
-    record FieldConstant
 \end{Verbatim}
 \normalsize
